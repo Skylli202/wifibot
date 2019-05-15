@@ -29,14 +29,17 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-        myrobot.cpp
+        myrobot.cpp \
+        speedcontrol.cpp
 
 HEADERS += \
         mainwindow.h \
-        myrobot.h
+        myrobot.h \
+        speedcontrol.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+        speedcontrol.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

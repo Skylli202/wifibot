@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "speedcontrol.h"
 
 #include <QDebug>
 
@@ -12,6 +13,9 @@ MainWindow::MainWindow(QWidget *parent) :
     timer->setInterval(1000);
     connect(timer, SIGNAL(timeout()), this, SLOT(timerAction()));
     robot = new MyRobot(this);
+
+    SpeedControl *speedControl = new SpeedControl(this);
+    speedControl->move(100,100);
 }
 
 MainWindow::~MainWindow()
