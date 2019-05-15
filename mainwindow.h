@@ -3,9 +3,9 @@
 
 #include <QMainWindow>
 #include <QKeyEvent>
+#include <QTimer>
 
 #include "myrobot.h"
-#include "keyenterreceiver.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,14 +21,13 @@ public:
     void function();
 
 private slots:
-    void on_pushButton_clicked();
-
     void on_actionDoConnect_2_triggered();
+    void timerAction();
 
 private:
     Ui::MainWindow *ui;
     MyRobot *robot;
-    keyEnterReceiver *key;
+    QTimer *timer;
 };
 
 #endif // MAINWINDOW_H

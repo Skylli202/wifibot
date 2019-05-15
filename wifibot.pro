@@ -27,13 +27,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        keyenterreceiver.cpp \
         main.cpp \
         mainwindow.cpp \
         myrobot.cpp
 
 HEADERS += \
-        keyenterreceiver.h \
         mainwindow.h \
         myrobot.h
 

@@ -8,6 +8,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    timer = new QTimer(this);
+    timer->setInterval(1000);
+    connect(timer, SIGNAL(timeout()), this, SLOT(timerAction()));
     robot = new MyRobot(this);
 }
 
@@ -16,26 +19,16 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked()
-{
-    qDebug() << "Hello dany";
-    robot->readyRead();
-
-}
-
 void MainWindow::on_actionDoConnect_2_triggered()
 {
     qDebug() << "Hello dany";
     //robot->doConnect();
-    ui->label->setText("Hello world");
-    QKeyEvent* key = static_cast<QKeyEvent*>(event);
-    qDebug() << key->eventFilter(this, );
+
+    //
+    if(!timer->isActive())
+        timer->start();
 }
 
-void MainWindow::function(){
-    int keepRunning = 1;
-    while(keepRunning){
-        char key;
-        int ascii;
-    }
+void MainWindow::timerAction(){
+    qDebug() << "salut toi";
 }
