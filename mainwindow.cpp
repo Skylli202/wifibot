@@ -26,5 +26,16 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_actionDoConnect_2_triggered()
 {
     qDebug() << "Hello dany";
-    robot->doConnect();
+    //robot->doConnect();
+    ui->label->setText("Hello world");
+    QKeyEvent* key = static_cast<QKeyEvent*>(event);
+    qDebug() << key->eventFilter(this, );
+}
+
+void MainWindow::function(){
+    int keepRunning = 1;
+    while(keepRunning){
+        char key;
+        int ascii;
+    }
 }

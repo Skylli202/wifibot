@@ -2,8 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QKeyEvent>
 
 #include "myrobot.h"
+#include "keyenterreceiver.h"
 
 namespace Ui {
 class MainWindow;
@@ -16,6 +18,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void function();
 
 private slots:
     void on_pushButton_clicked();
@@ -25,6 +28,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     MyRobot *robot;
+    keyEnterReceiver *key;
 };
 
 #endif // MAINWINDOW_H
