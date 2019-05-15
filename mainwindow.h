@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 
-#include "./wifibotlab/myrobot.h"
+#include "myrobot.h"
 
 namespace Ui {
 class MainWindow;
@@ -22,7 +22,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    MyRobot robot;
+    MyRobot *robot;
 };
 
 #endif // MAINWINDOW_H
