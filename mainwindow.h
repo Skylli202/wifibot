@@ -20,6 +20,8 @@ public:
 private slots:
     void on_pushButton_clicked();
 
+    void on_actionDoConnect_2_triggered();
+
 private:
     Ui::MainWindow *ui;
     MyRobot *robot;

@@ -19,5 +19,12 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     qDebug() << "Hello dany";
+    robot->readyRead();
+
+}
+
+void MainWindow::on_actionDoConnect_2_triggered()
+{
+    qDebug() << "Hello dany";
     robot->doConnect();
 }

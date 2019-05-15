@@ -17,6 +17,7 @@ public:
     QByteArray DataToSend;
     QByteArray DataReceived;
     QMutex Mutex;
+
 signals:
     void updateUI(const QByteArray Data);
 public slots:

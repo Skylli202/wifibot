@@ -14,11 +14,14 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>150</x>
-      <y>130</y>
+      <x>70</x>
+      <y>170</y>
       <width>113</width>
       <height>32</height>
      </rect>
@@ -41,7 +44,6 @@
     <property name="title">
      <string>Connect</string>
     </property>
-    <addaction name="actionDoConnect_2"/>
    </widget>
    <addaction name="menuConnect"/>
   </widget>
@@ -52,6 +54,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionDoConnect_2"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionDoConnect">
