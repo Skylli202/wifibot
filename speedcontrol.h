@@ -15,6 +15,8 @@ public:
     explicit SpeedControl(QWidget *parent = nullptr);
     ~SpeedControl();
 
+    bool speedValueCanBeIncreaseTo(int newSpeed);
+
 private slots:
     void increaseSpeed();
     void decreaseSpeed();
