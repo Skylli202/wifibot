@@ -7,13 +7,13 @@ MyRobot::MyRobot(QObject *parent) : QObject(parent) {
     DataToSend.resize(9);
     DataToSend[0] = 0xFF;
     DataToSend[1] = 0x07;
-    DataToSend[2] = 0x71;
+    DataToSend[2] = 0x78;
     DataToSend[3] = 0x0;
-    DataToSend[4] = 0x71;
+    DataToSend[4] = 0x78;
     DataToSend[5] = 0x0;
     DataToSend[6] = 0x50;
 
-    short mycrcsend = Crc16(DataToSend,6);
+    short mycrcsend = Crc16(DataToSend, 6);
     DataToSend[7] = mycrcsend;
     DataToSend[8] = (mycrcsend >> 8);
 
@@ -68,6 +68,7 @@ void MyRobot::bytesWritten(qint64 bytes) {
 void MyRobot::readyRead() {
     qDebug() << "reading..."; // read the data from the socket
     DataReceived = socket->readAll();
+    qDebug() << "DataReceived : " << DataReceived;
     emit updateUI(DataReceived);
     qDebug() << "dataReceived " << DataReceived[0] << DataReceived[1] << DataReceived[2];
 }
