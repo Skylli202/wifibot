@@ -24,6 +24,8 @@ private slots:
     void on_actionDoConnect_2_triggered();
     void timerAction();
 
+    void on_actionDoDisconnect_triggered();
+
 private:
     Ui::MainWindow *ui;
     MyRobot *robot;

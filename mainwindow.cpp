@@ -25,14 +25,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionDoConnect_2_triggered()
 {
-    qDebug() << "Hello dany";
-    //robot->doConnect();
-
-    //
-    if(!timer->isActive())
-        timer->start();
+//    qDebug() << "Hello dany";
+    robot->doConnect();
 }
 
 void MainWindow::timerAction(){
     qDebug() << "salut toi";
+}
+
+void MainWindow::on_actionDoDisconnect_triggered()
+{
+    robot->disConnect();
 }

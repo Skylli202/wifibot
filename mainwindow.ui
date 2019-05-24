@@ -55,11 +55,17 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionDoConnect_2"/>
+   <addaction name="actionDoDisconnect"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionDoConnect_2">
    <property name="text">
     <string>DoConnect</string>
+   </property>
+  </action>
+  <action name="actionDoDisconnect">
+   <property name="text">
+    <string>DoDisconnect</string>
    </property>
   </action>
  </widget>

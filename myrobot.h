@@ -17,6 +17,7 @@ public:
     QByteArray DataToSend;
     QByteArray DataReceived;
     QMutex Mutex;
+    short Crc16(QByteArray Array , unsigned char Taille_max);
 
 signals:
     void updateUI(const QByteArray Data);
