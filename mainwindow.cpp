@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(timer, SIGNAL(timeout()), this, SLOT(timerAction()));
     robot = new MyRobot(this);
 
-    SpeedControl *speedControl = new SpeedControl(this);
+    SpeedControl *speedControl = new SpeedControl(this,10);
     speedControl->move(100,100);
 }
 
@@ -23,9 +23,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_actionDoConnect_2_triggered()
+// on_action stuff
+void MainWindow::on_actionDoConnect_triggered()
 {
-//    qDebug() << "Hello dany";
     robot->doConnect();
 }
 
@@ -36,4 +36,63 @@ void MainWindow::timerAction(){
 void MainWindow::on_actionDoDisconnect_triggered()
 {
     robot->disConnect();
+}
+
+void MainWindow::on_backwardButton_clicked()
+{
+    robot->writeData(120, 120, false, false);
+    ui->pressedKeyLabel->setText("moving backward");
+}
+
+void MainWindow::on_forwardButton_clicked()
+{
+    robot->writeData(120, 120, true, true);
+    ui->pressedKeyLabel->setText("moving forward");
+}
+
+// keypress
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Escape)
+    {
+        robot->doConnect();
+        ui->pressedKeyLabel->setText("You pressed ESC");
+    } else if (event->key() == Qt::Key_Up) {
+        ui->pressedKeyLabel->setText("You pressed " + QKeySequence(event->key()).toString());
+        robot->writeData(120, 120, true, true);
+    } else if (event->key() == Qt::Key_Down) {
+        ui->pressedKeyLabel->setText("You pressed " + QKeySequence(event->key()).toString());
+        robot->writeData(120, 120, false, false);
+    } else if (event->key() == Qt::Key_Left) {
+        ui->pressedKeyLabel->setText("You pressed " + QKeySequence(event->key()).toString());
+        robot->writeData(40, 40, false, true);
+    } else if (event->key() == Qt::Key_Right) {
+        ui->pressedKeyLabel->setText("You pressed " + QKeySequence(event->key()).toString());
+        robot->writeData(40,40,true,false);
+    } else {
+        ui->pressedKeyLabel->setText("You pressed " + QKeySequence(event->key()).toString());
+    }
+}
+
+// keyrelease
+void MainWindow::keyReleaseEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Escape)
+    {
+        ui->pressedKeyLabel->setText("You released ESC");
+    } else if (event->key() == Qt::Key_Up) {
+        ui->pressedKeyLabel->setText("You released " + QKeySequence(event->key()).toString());
+        robot->resetDataToSend();
+    } else if (event->key() == Qt::Key_Down) {
+        ui->pressedKeyLabel->setText("You released " + QKeySequence(event->key()).toString());
+        robot->resetDataToSend();
+    } else if (event->key() == Qt::Key_Left) {
+        ui->pressedKeyLabel->setText("You released " + QKeySequence(event->key()).toString());
+        robot->resetDataToSend();
+    } else if (event->key() == Qt::Key_Right) {
+        ui->pressedKeyLabel->setText("You released " + QKeySequence(event->key()).toString());
+        robot->resetDataToSend();
+    } else {
+        ui->pressedKeyLabel->setText("You released " + QKeySequence(event->key()).toString());
+    }
 }

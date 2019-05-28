@@ -19,12 +19,15 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void function();
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
 
 private slots:
-    void on_actionDoConnect_2_triggered();
     void timerAction();
-
     void on_actionDoDisconnect_triggered();
+    void on_actionDoConnect_triggered();
+    void on_backwardButton_clicked();
+    void on_forwardButton_clicked();
 
 private:
     Ui::MainWindow *ui;

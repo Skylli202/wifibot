@@ -18,6 +18,9 @@ public:
     QByteArray DataReceived;
     QMutex Mutex;
     short Crc16(QByteArray Array , unsigned char Taille_max);
+    void writeData(short leftSpeed, short rightSpeed, bool leftForward, bool rightForward);
+    void resetDataToSend();
+    void printData(QByteArray qb);
 
 signals:
     void updateUI(const QByteArray Data);
