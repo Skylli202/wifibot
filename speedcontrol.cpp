@@ -73,3 +73,4 @@ void SpeedControl::setCursorValue(int i){
 }
 
 int SpeedControl::getCursorValue() {return this->cursorValue;}
+int SpeedControl::getSpeedValue() {return this->speedValue;}

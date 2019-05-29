@@ -6,6 +6,7 @@
 #include <QTimer>
 
 #include "myrobot.h"
+#include "speedcontrol.h"
 
 namespace Ui {
 class MainWindow;
@@ -33,6 +34,7 @@ private:
     Ui::MainWindow *ui;
     MyRobot *robot;
     QTimer *timer;
+    SpeedControl *speedcontrol;
 };
 
 #endif // MAINWINDOW_H

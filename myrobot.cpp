@@ -5,7 +5,7 @@
 MyRobot::MyRobot(QObject *parent) : QObject(parent) {
     DataToSend.resize(9);
     DataToSend.resize(9);
-    DataToSend[0] = 0xFF;
+    DataToSend[0] = static_cast<char>(0xFF);
     DataToSend[1] = 0x07;
 
     // left
@@ -20,8 +20,8 @@ MyRobot::MyRobot(QObject *parent) : QObject(parent) {
     DataToSend[6] = 0x0;
 
     short mycrcsend = Crc16(DataToSend, 6);
-    DataToSend[7] = mycrcsend;
-    DataToSend[8] = (mycrcsend >> 8);
+    DataToSend[7] = static_cast<char>(mycrcsend);
+    DataToSend[8] = static_cast<char>(mycrcsend >> 8);
 
     DataReceived.resize(21);
     TimerEnvoi = new QTimer();
@@ -71,26 +71,26 @@ void MyRobot::writeData(short leftSpeed, short rightSpeed, bool leftForward, boo
     local.resize(9);
 
     // init
-    local[0] = 0xFF;
+    local[0] = static_cast<char>(0xFF);
     local[1] = 0x07;
 
     // left speed
-    local[2] = (unsigned char) leftSpeed;
-    local[3] = (unsigned char) (leftSpeed >> 8);
+    local[2] = static_cast<char>(leftSpeed);
+    local[3] = static_cast<char>(leftSpeed >> 8);
 
     // right speed
-    local[4] = (unsigned char) rightSpeed;
-    local[5] = (unsigned char) (rightSpeed >> 8);
+    local[4] = static_cast<char>(rightSpeed);
+    local[5] = static_cast<char>(rightSpeed >> 8);
 
     // special byte
     int tmp = 128+32; // Close loop control always ON (128 left loop / 32 right loop)
     if(leftForward) tmp += 64;
     if(rightForward) tmp += 16;
-    local[6] = tmp;
+    local[6] = static_cast<char>(tmp);
 
     // CRC
     short crc = Crc16(local, 6);
-    local[7] = crc;
+    local[7] = static_cast<char>(crc);
     local[8] = (crc>>8);
 
     printData(local); // listener
@@ -100,7 +100,7 @@ void MyRobot::writeData(short leftSpeed, short rightSpeed, bool leftForward, boo
 // Reset DataToSend to his construction value : robot idle status.
 void MyRobot::resetDataToSend(){
     this->DataToSend.resize(9);
-    this->DataToSend[0] = 0xFF;
+    this->DataToSend[0] = static_cast<char>(0xFF);
     this->DataToSend[1] = 0x0;
     this->DataToSend[2] = 0x0;
     this->DataToSend[3] = 0x0;
@@ -109,7 +109,7 @@ void MyRobot::resetDataToSend(){
     this->DataToSend[6] = 0x0;
 
     short mycrcsend = Crc16(this->DataToSend, 6);
-    this->DataToSend[7] = mycrcsend;
+    this->DataToSend[7] = static_cast<char>(mycrcsend);
     this->DataToSend[8] = (mycrcsend >> 8);
     printData(this->DataToSend);
 }
@@ -160,13 +160,13 @@ short MyRobot::Crc16(QByteArray Array, unsigned char Taille_max)
             if (Parity%2 == true) Crc ^= Polynome;
         }
     }
-    return(Crc);
+    return(static_cast<short>(Crc));
 }
 
 // Debug tools : print onto the console the DataToSend
 void MyRobot::printData(QByteArray qb){
     QDebug debug = qDebug();
     for(int i=0; i<qb.size(); i++){
-        debug << (unsigned char) (qb[i]) << " ";
+        debug << static_cast<unsigned char>(qb[i]) << " ";
     }
 }

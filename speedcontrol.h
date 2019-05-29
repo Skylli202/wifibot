@@ -20,6 +20,7 @@ public:
     // Getter & Setter
     void setCursorValue(int i);
     int getCursorValue();
+    int getSpeedValue();
 
 private slots:
     void increaseSpeed();

@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "speedcontrol.h"
 
 #include <QDebug>
 
@@ -9,13 +8,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    timer = new QTimer(this);
-    timer->setInterval(1000);
+    this->timer = new QTimer(this);
+    this->timer->setInterval(1000);
     connect(timer, SIGNAL(timeout()), this, SLOT(timerAction()));
-    robot = new MyRobot(this);
+    this->robot = new MyRobot(this);
 
-    SpeedControl *speedControl = new SpeedControl(this,10);
-    speedControl->move(100,100);
+    this->speedcontrol = new SpeedControl(this,10);
+    speedcontrol->move(100,100);
 }
 
 MainWindow::~MainWindow()
@@ -53,16 +52,17 @@ void MainWindow::on_forwardButton_clicked()
 // keypress
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
+    short speedValue = (short) this->speedcontrol->getSpeedValue();
     if(event->key() == Qt::Key_Escape)
     {
         robot->doConnect();
         ui->pressedKeyLabel->setText("You pressed ESC");
     } else if (event->key() == Qt::Key_Up) {
         ui->pressedKeyLabel->setText("You pressed " + QKeySequence(event->key()).toString());
-        robot->writeData(120, 120, true, true);
+        robot->writeData(speedValue, speedValue, true, true);
     } else if (event->key() == Qt::Key_Down) {
         ui->pressedKeyLabel->setText("You pressed " + QKeySequence(event->key()).toString());
-        robot->writeData(120, 120, false, false);
+        robot->writeData(speedValue, speedValue, false, false);
     } else if (event->key() == Qt::Key_Left) {
         ui->pressedKeyLabel->setText("You pressed " + QKeySequence(event->key()).toString());
         robot->writeData(40, 40, false, true);
