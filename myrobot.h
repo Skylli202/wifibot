@@ -20,6 +20,7 @@ public:
     short Crc16(QByteArray Array , unsigned char Taille_max);
     void writeData(short leftSpeed, short rightSpeed, bool leftForward, bool rightForward);
     void resetDataToSend();
+    void getData(QByteArray dataReceived);
     void printData(QByteArray qb);
 
 signals:
