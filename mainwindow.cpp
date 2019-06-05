@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this->robot, SIGNAL(updateUI(QByteArray)), this, SLOT(update(QByteArray)));
 
     this->speedcontrol = new SpeedControl(this,10);
-    speedcontrol->move(100,100);
+    speedcontrol->move(300,100);
 }
 
 MainWindow::~MainWindow()
@@ -53,8 +53,6 @@ void MainWindow::on_forwardButton_clicked()
 
 // Struct data
 void MainWindow::getData(QByteArray dataReceived) {
-    struct Data data;
-
     // left side
     data.leftSpeed = dataReceived[0] + (dataReceived[1] << 8);
     // Gestion de la conversion de char vers short et le bit de signe
@@ -74,7 +72,7 @@ void MainWindow::getData(QByteArray dataReceived) {
     data.rightOdometry = ((((long)dataReceived[16] << 24)) + (((long)dataReceived[15] << 16)) + (((long)dataReceived[14] << 8)) + ((long)dataReceived[13]));
 
     // general
-    data.batteryLevel =  static_cast<char>(dataReceived[2]);
+    data.batteryLevel =  static_cast<unsigned char>(dataReceived[2]);
     qDebug() << "dataRecevied[2] = " << data.batteryLevel;
     data.version = dataReceived[18];
 }
@@ -86,15 +84,16 @@ void MainWindow::update(QByteArray qb){
     QString str = "";
 
     // Left stuff
-    ui->label_leftSpeed->setText(str.setNum(data.leftSpeed));
-    ui->label_leftOdometry->setText(str.setNum(data.leftOdometry));
+    ui->label_leftSpeed->setText("left speed : " + str.setNum(data.leftSpeed));
+    ui->label_leftOdometry->setText("left Odome : " + str.setNum(data.leftOdometry));
 
     // Right stuff
-    ui->label_rightSpeed->setText(str.setNum(data.rightSpeed));
-    ui->label_rightOdometry->setText(str.setNum(data.rightOdometry));
+    ui->label_rightSpeed->setText("right speed : " + str.setNum(data.rightSpeed));
+    ui->label_rightOdometry->setText("right Odome : " + str.setNum(data.rightOdometry));
 
     str = QString(data.batteryLevel);
-    ui->label_Battery->setText(str);
+    ui->label_Battery->setText("Battery level : " + str.setNum(data.batteryLevel));
+    ui->label_Version->setText("Version : " + str.setNum(data.version));
 
     qDebug() << "update function : str = " << str;
     qDebug() << "update function : char = " << data.batteryLevel;
@@ -105,11 +104,18 @@ void MainWindow::update(QByteArray qb){
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     short speedValue = static_cast<short>(this->speedcontrol->getSpeedValue());
-    if(event->key() == Qt::Key_Escape)
-    {
+
+    // Connect Disconnect
+    if (event->key() == Qt::Key_Ampersand) {
+        ui->pressedKeyLabel->setText("You pressed " + QKeySequence(event->key()).toString());
         robot->doConnect();
-        ui->pressedKeyLabel->setText("You pressed ESC");
-    } else if (event->key() == Qt::Key_Up) {
+    } else if (event->key() == Qt::Key_Eacute) {
+        ui->pressedKeyLabel->setText("You pressed " + QKeySequence(event->key()).toString());
+        robot->disconnect();
+    }
+
+    // Flèches directionnel
+    else if (event->key() == Qt::Key_Up) {
         ui->pressedKeyLabel->setText("You pressed " + QKeySequence(event->key()).toString());
         robot->writeData(speedValue, speedValue, true, true);
     } else if (event->key() == Qt::Key_Down) {
@@ -121,7 +127,19 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     } else if (event->key() == Qt::Key_Right) {
         ui->pressedKeyLabel->setText("You pressed " + QKeySequence(event->key()).toString());
         robot->writeData(speedValue,speedValue,true,false);
-    } else {
+    }
+
+    // increaseSpeed decreaseSpeed
+    else if (event->key() == Qt::Key_Equal) {
+        ui->pressedKeyLabel->setText("You pressed " + QKeySequence(event->key()).toString());
+        speedcontrol->increaseSpeed();
+    } else if (event->key() == Qt::Key_Colon) {
+        ui->pressedKeyLabel->setText("You pressed " + QKeySequence(event->key()).toString());
+        speedcontrol->decreaseSpeed();
+    }
+
+    // else..
+    else {
         ui->pressedKeyLabel->setText("You pressed " + QKeySequence(event->key()).toString());
     }
 }

@@ -22,7 +22,7 @@ public:
     int getCursorValue();
     int getSpeedValue();
 
-private slots:
+public slots:
     void increaseSpeed();
     void decreaseSpeed();
 
