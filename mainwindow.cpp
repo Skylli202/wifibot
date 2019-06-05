@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(timer, SIGNAL(timeout()), this, SLOT(timerAction()));
     this->robot = new MyRobot(this);
 
+    connect(this->robot, SIGNAL(updateUI(QByteArray)), this, SLOT(update(QByteArray)));
+
     this->speedcontrol = new SpeedControl(this,10);
     speedcontrol->move(100,100);
 }
@@ -39,20 +41,70 @@ void MainWindow::on_actionDoDisconnect_triggered()
 
 void MainWindow::on_backwardButton_clicked()
 {
-    robot->writeData(120, 120, false, false);
+    robot->writeData(static_cast<short>(this->speedcontrol->getSpeedValue()), static_cast<short>(this->speedcontrol->getSpeedValue()), false, false);
     ui->pressedKeyLabel->setText("moving backward");
 }
 
 void MainWindow::on_forwardButton_clicked()
 {
-    robot->writeData(120, 120, true, true);
+    robot->writeData(static_cast<short>(this->speedcontrol->getSpeedValue()), static_cast<short>(this->speedcontrol->getSpeedValue()), true, true);
     ui->pressedKeyLabel->setText("moving forward");
+}
+
+// Struct data
+void MainWindow::getData(QByteArray dataReceived) {
+    struct Data data;
+
+    // left side
+    data.leftSpeed = dataReceived[0] + (dataReceived[1] << 8);
+    // Gestion de la conversion de char vers short et le bit de signe
+    if(data.leftSpeed > 32767)
+        data.leftSpeed = data.leftSpeed - 65536;
+    data.IR1 = dataReceived[3];
+    data.IR2 = dataReceived[4];
+    data.leftOdometry = ((((long)dataReceived[8] << 24)) + (((long)dataReceived[7] << 16)) + (((long)dataReceived[6] << 8)) + ((long)dataReceived[5]));
+
+    // right side
+    data.rightSpeed = dataReceived[9] + (dataReceived[10] << 8);
+    // Gestion de la conversion de char vers short et le bit de signe
+    if(data.rightSpeed > 32767)
+        data.rightSpeed = data.rightSpeed - 65536;
+    data.IR3 = dataReceived[11];
+    data.IR4 = dataReceived[12];
+    data.rightOdometry = ((((long)dataReceived[16] << 24)) + (((long)dataReceived[15] << 16)) + (((long)dataReceived[14] << 8)) + ((long)dataReceived[13]));
+
+    // general
+    data.batteryLevel =  static_cast<char>(dataReceived[2]);
+    qDebug() << "dataRecevied[2] = " << data.batteryLevel;
+    data.version = dataReceived[18];
+}
+
+//  UI
+void MainWindow::update(QByteArray qb){
+    getData(qb);
+
+    QString str = "";
+
+    // Left stuff
+    ui->label_leftSpeed->setText(str.setNum(data.leftSpeed));
+    ui->label_leftOdometry->setText(str.setNum(data.leftOdometry));
+
+    // Right stuff
+    ui->label_rightSpeed->setText(str.setNum(data.rightSpeed));
+    ui->label_rightOdometry->setText(str.setNum(data.rightOdometry));
+
+    str = QString(data.batteryLevel);
+    ui->label_Battery->setText(str);
+
+    qDebug() << "update function : str = " << str;
+    qDebug() << "update function : char = " << data.batteryLevel;
+
 }
 
 // keypress
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-    short speedValue = (short) this->speedcontrol->getSpeedValue();
+    short speedValue = static_cast<short>(this->speedcontrol->getSpeedValue());
     if(event->key() == Qt::Key_Escape)
     {
         robot->doConnect();
@@ -65,10 +117,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         robot->writeData(speedValue, speedValue, false, false);
     } else if (event->key() == Qt::Key_Left) {
         ui->pressedKeyLabel->setText("You pressed " + QKeySequence(event->key()).toString());
-        robot->writeData(40, 40, false, true);
+        robot->writeData(speedValue, speedValue, false, true);
     } else if (event->key() == Qt::Key_Right) {
         ui->pressedKeyLabel->setText("You pressed " + QKeySequence(event->key()).toString());
-        robot->writeData(40,40,true,false);
+        robot->writeData(speedValue,speedValue,true,false);
     } else {
         ui->pressedKeyLabel->setText("You pressed " + QKeySequence(event->key()).toString());
     }
