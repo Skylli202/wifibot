@@ -15,6 +15,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->speedcontrol = new SpeedControl(this,10);
     speedcontrol->move(100,100);
+
+    QWebEngineView *view = new QWebEngineView(parent);
+     view->load(QUrl("http://192.168.1.106:8080/"));
+     view->show();
 }
 
 MainWindow::~MainWindow()

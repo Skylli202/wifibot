@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QKeyEvent>
 #include <QTimer>
+#include <QWebEngineView>
 
 #include "myrobot.h"
 #include "speedcontrol.h"
