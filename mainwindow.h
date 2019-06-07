@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QKeyEvent>
 #include <QTimer>
+#include <QWebEngineView>
+#include <QWebEngineFullScreenRequest>
 
 #include "myrobot.h"
 #include "speedcontrol.h"
@@ -23,6 +25,7 @@ public:
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
     void getData(QByteArray qb);
+    QString getLul(unsigned char str);
     struct Data{
         // left side
         short leftSpeed;
@@ -57,6 +60,7 @@ private:
     MyRobot *robot;
     QTimer *timer;
     SpeedControl *speedcontrol;
+    QWebEngineView *m_view;
 };
 
 #endif // MAINWINDOW_H

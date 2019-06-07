@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "string"
 
 #include <QDebug>
 
@@ -17,6 +18,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->speedcontrol = new SpeedControl(this,10);
     speedcontrol->move(300,100);
+
+    //this->m_view(new QWebEngineView(this));
+
 }
 
 MainWindow::~MainWindow()
@@ -72,7 +76,7 @@ void MainWindow::getData(QByteArray dataReceived) {
     data.rightOdometry = ((((long)dataReceived[16] << 24)) + (((long)dataReceived[15] << 16)) + (((long)dataReceived[14] << 8)) + ((long)dataReceived[13]));
 
     // general
-    data.batteryLevel =  static_cast<unsigned char>(dataReceived[2]);
+    data.batteryLevel =  dataReceived[2];
     qDebug() << "dataRecevied[2] = " << data.batteryLevel;
     data.version = dataReceived[18];
 }
@@ -81,23 +85,58 @@ void MainWindow::getData(QByteArray dataReceived) {
 void MainWindow::update(QByteArray qb){
     getData(qb);
 
+//    robot->printData(qb);
+
     QString str = "";
 
-    // Left stuff
+//    // Left stuff
     ui->label_leftSpeed->setText("left speed : " + str.setNum(data.leftSpeed));
     ui->label_leftOdometry->setText("left Odome : " + str.setNum(data.leftOdometry));
 
-    // Right stuff
+//    // Right stuff
     ui->label_rightSpeed->setText("right speed : " + str.setNum(data.rightSpeed));
     ui->label_rightOdometry->setText("right Odome : " + str.setNum(data.rightOdometry));
 
-    str = QString(data.batteryLevel);
-    ui->label_Battery->setText("Battery level : " + str.setNum(data.batteryLevel));
+//    str = QString(static_cast<unsigned char>(qb[2]));
+    ui->label_Battery->setText("Battery : " + str.setNum(data.batteryLevel));
     ui->label_Version->setText("Version : " + str.setNum(data.version));
 
-    qDebug() << "update function : str = " << str;
-    qDebug() << "update function : char = " << data.batteryLevel;
+    // IR
+    ui->label_IR1->setText("IR1 : " + str.setNum(data.IR1));
+    ui->label_IR2->setText("IR2 : " + str.setNum(data.IR2));
+    ui->label_IR3->setText("IR3 : " + str.setNum(data.IR3));
+    ui->label_IR4->setText("IR4 : " + str.setNum(data.IR4));
 
+//    qDebug() << "update function : str = " << str;
+//    qDebug() << "update function : char = " << data.batteryLevel;
+
+    qDebug() << ("DataReceived in MainWindow function") << qb;
+    qDebug() << ("Batt level : ") << (unsigned char)qb[2] ;
+    unsigned char uchar = (unsigned char)(qb[2]);
+    char c = (char) uchar;
+    qDebug() << "affiche uchar : " << uchar;
+    qDebug() << "affiche c : " << c;
+
+    str = getLul(uchar);
+    qDebug() << "str = " << str;
+    qDebug() << "test = " << (int) '.';
+
+}
+
+QString MainWindow::getLul(unsigned char str){
+    QString s;
+    QString result = "";
+    int rev = sizeof(str);
+
+    for(int i=0; i<rev; i++){
+        s = QString("%1").arg(str,0,16);
+
+        if(s == "0"){
+            s="00";
+        }
+        result.append(s);
+    }
+    return result;
 }
 
 // keypress
@@ -111,7 +150,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         robot->doConnect();
     } else if (event->key() == Qt::Key_Eacute) {
         ui->pressedKeyLabel->setText("You pressed " + QKeySequence(event->key()).toString());
-        robot->disconnect();
+        robot->disConnect();
     }
 
     // Flèches directionnel
