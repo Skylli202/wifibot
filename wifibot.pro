@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui    multimedia multimediawidgets
 QT       += network
 
 
@@ -33,16 +33,20 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         myrobot.cpp \
-        speedcontrol.cpp
+        speedcontrol.cpp \
+        widget.cpp
 
 HEADERS += \
         mainwindow.h \
         myrobot.h \
-        speedcontrol.h
+        speedcontrol.h \
+        widget.h
 
 FORMS += \
         mainwindow.ui \
         speedcontrol.ui
+
+QMAKE_CFLAGS += -std=gnu++14
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

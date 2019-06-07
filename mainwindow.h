@@ -5,6 +5,10 @@
 #include <QKeyEvent>
 #include <QTimer>
 #include <QWebEngineView>
+#include <QtWebEngine>
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <qtwebengineglobal.h>
 
 #include "myrobot.h"
 #include "speedcontrol.h"

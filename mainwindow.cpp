@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     speedcontrol->move(100,100);
 
     QWebEngineView *view = new QWebEngineView(parent);
-     view->load(QUrl("http://192.168.1.106:8080/"));
+     view->load(QUrl("http://192.168.1.11:8080/stream_simple.html"));
      view->show();
 }
 
