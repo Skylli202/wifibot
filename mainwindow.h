@@ -30,13 +30,13 @@ public:
         short leftSpeed;
         int IR1;
         int IR2;
-        int leftOdometry;
+        long leftOdometry;
 
         // right side
         short rightSpeed;
         int IR3;
         int IR4;
-        int rightOdometry;
+        long rightOdometry;
 
         // general
         char batteryLevel;

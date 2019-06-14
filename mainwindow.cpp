@@ -67,7 +67,7 @@ void MainWindow::getData(QByteArray dataReceived) {
     // left side
     data.leftSpeed = dataReceived[0] + (dataReceived[1] << 8);
     // Gestion de la conversion de char vers short et le bit de signe
-    if(data.leftSpeed > 32767)
+    if(data.leftSpeed < 32767)
         data.leftSpeed = data.leftSpeed - 65536;
     data.IR1 = dataReceived[3];
     data.IR2 = dataReceived[4];
