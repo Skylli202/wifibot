@@ -25,19 +25,18 @@ public:
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
     void getData(QByteArray qb);
-    QString getLul(unsigned char str);
     struct Data{
         // left side
         short leftSpeed;
-        float IR1;
-        float IR2;
-        float leftOdometry;
+        int IR1;
+        int IR2;
+        int leftOdometry;
 
         // right side
         short rightSpeed;
-        float IR3;
-        float IR4;
-        float rightOdometry;
+        int IR3;
+        int IR4;
+        int rightOdometry;
 
         // general
         char batteryLevel;

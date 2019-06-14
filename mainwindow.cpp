@@ -3,6 +3,7 @@
 #include "string"
 
 #include <QDebug>
+#include <QURl>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -20,6 +21,12 @@ MainWindow::MainWindow(QWidget *parent) :
     speedcontrol->move(300,100);
 
     //this->m_view(new QWebEngineView(this));
+
+    this->m_view = new QWebEngineView(this);
+    this->m_view->load(QUrl("http://192.168.1.11:8080/?action=stream"));
+
+    this->m_view->move(480, 20);
+    this->m_view->resize(300,300);
 
 }
 
@@ -85,58 +92,29 @@ void MainWindow::getData(QByteArray dataReceived) {
 void MainWindow::update(QByteArray qb){
     getData(qb);
 
-//    robot->printData(qb);
+    this->m_view->repaint();
+
+    //    robot->printData(qb);
 
     QString str = "";
 
-//    // Left stuff
-    ui->label_leftSpeed->setText("left speed : " + str.setNum(data.leftSpeed));
-    ui->label_leftOdometry->setText("left Odome : " + str.setNum(data.leftOdometry));
+    //    // Left stuff
+    ui->label_leftSpeed->setText("left speed : " + QString::number(data.leftSpeed));
+    ui->label_leftOdometry->setText("left Odome : " + QString::number(data.leftOdometry));
 
-//    // Right stuff
-    ui->label_rightSpeed->setText("right speed : " + str.setNum(data.rightSpeed));
-    ui->label_rightOdometry->setText("right Odome : " + str.setNum(data.rightOdometry));
+    //    // Right stuff
+    ui->label_rightSpeed->setText("right speed : " + QString::number(data.rightSpeed));
+    ui->label_rightOdometry->setText("right Odome : " + QString::number(data.rightOdometry));
 
-//    str = QString(static_cast<unsigned char>(qb[2]));
-    ui->label_Battery->setText("Battery : " + str.setNum(data.batteryLevel));
-    ui->label_Version->setText("Version : " + str.setNum(data.version));
+    //    str = QString(static_cast<unsigned char>(qb[2]));
+    ui->label_Battery->setText("Battery : " + QString::number(data.batteryLevel+256));
+    ui->label_Version->setText("Version : " + QString::number(data.version));
 
     // IR
-    ui->label_IR1->setText("IR1 : " + str.setNum(data.IR1));
-    ui->label_IR2->setText("IR2 : " + str.setNum(data.IR2));
-    ui->label_IR3->setText("IR3 : " + str.setNum(data.IR3));
-    ui->label_IR4->setText("IR4 : " + str.setNum(data.IR4));
-
-//    qDebug() << "update function : str = " << str;
-//    qDebug() << "update function : char = " << data.batteryLevel;
-
-    qDebug() << ("DataReceived in MainWindow function") << qb;
-    qDebug() << ("Batt level : ") << (unsigned char)qb[2] ;
-    unsigned char uchar = (unsigned char)(qb[2]);
-    char c = (char) uchar;
-    qDebug() << "affiche uchar : " << uchar;
-    qDebug() << "affiche c : " << c;
-
-    str = getLul(uchar);
-    qDebug() << "str = " << str;
-    qDebug() << "test = " << (int) '.';
-
-}
-
-QString MainWindow::getLul(unsigned char str){
-    QString s;
-    QString result = "";
-    int rev = sizeof(str);
-
-    for(int i=0; i<rev; i++){
-        s = QString("%1").arg(str,0,16);
-
-        if(s == "0"){
-            s="00";
-        }
-        result.append(s);
-    }
-    return result;
+    ui->label_IR1->setText("IR1 : " + QString::number(data.IR1));
+    ui->label_IR2->setText("IR2 : " + QString::number(data.IR2));
+    ui->label_IR3->setText("IR3 : " + QString::number(data.IR3));
+    ui->label_IR4->setText("IR4 : " + QString::number(data.IR4));
 }
 
 // keypress
